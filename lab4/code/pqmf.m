@@ -5,21 +5,22 @@ function [ song_data ] = pqmf( filename, frameSize )
 [audio, fs] = audioread(filename);
 nFrame = floor (length (audio)/frameSize);
 buffer = zeros(1,512);
-song_data = zeros(18,32,nFrame);
+song_data = zeros(18,32,nFrame); %This may be un-needed. Revisit
+window = loadwindow;
     for frame = 1:nFrame                % chunk the audio into blocks of 576 samples
-        for segment = 1:18
-            
+        for segment = 1:18     
         offset = (frame - 1)*frameSize;       % absolute address of the frame
-        for index = 1:18    % 18 non overlapping blocks of size 32
+        for index = 1:18   
             total_offset = (offset+(index-1)*32)+1;
-            song_data(segment,:,frame) = audio(total_offset:total_offset+31);
-            % process a block of 32 new input samples
-            % see flow chart in Fig. 
-            % Frequency inversion
-%             if (mod (index,2) == 1)
-%                 channel = 1:2:32;
-%                 S(channel) = -S(channel);
-%             end
+            buffer = circshift(buffer,32,2);% shift old data to front
+            buffer(1:32) = fliplr(audio(total_offset:total_offset+31)); %replace oldest data
+            Z = buffer.*window; %Calculate Z
+            Y = zeros(1,64); %Create a place for Y
+            for i = 1:size(buffer,2)
+                Y(mod(i-1,64)+1) = Y(mod(i-1,64)+1) + buffer(i);
+            end
+            
+            song_data(segment,:,frame) = audio(total_offset:total_offset+31);%This may be uneeded. Revisit
         end
     end
 
