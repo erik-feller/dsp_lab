@@ -1,4 +1,4 @@
-function [ song_data ] = pqmf( filename, frameSize )
+function [ S ] = pqmf( filename, frameSize )
 %pqmf: filter for mp3
 %   Detailed explanation goes here
 
@@ -7,6 +7,7 @@ nFrame = floor (length (audio)/frameSize);
 buffer = zeros(1,512);
 song_data = zeros(18,32,nFrame); %This may be un-needed. Revisit
 window = loadwindow;
+S = zeros(32,nFrame);
     for frame = 1:nFrame                % chunk the audio into blocks of 576 samples
         for segment = 1:18     
         offset = (frame - 1)*frameSize;       % absolute address of the frame
@@ -19,8 +20,12 @@ window = loadwindow;
             for i = 1:size(buffer,2)
                 Y(mod(i-1,64)+1) = Y(mod(i-1,64)+1) + buffer(i);
             end
-            
-            song_data(segment,:,frame) = audio(total_offset:total_offset+31);%This may be uneeded. Revisit
+            for k = 1:32
+                for r = 1:size(Y,2)
+                    S(k,frame) = S(k,frame) + (cos(((2*k)*(r-17)*pi)/64)*Y(r));
+                end
+            end
+            %song_data(segment,:,frame) = audio(total_offset:total_offset+31);%This may be uneeded. Revisit
         end
     end
 
