@@ -6,7 +6,7 @@ function [ S ] = pqmf( filename, frameSize )
 nFrame = floor (length (audio)/frameSize);
 buffer = zeros(1,512);
 window = loadwindow;
-S = zeros(32,nFrame);
+S = zeros(32,nFrame*18);
     for frame = 1:nFrame                % chunk the audio into blocks of 576 samples
         for segment = 1:18     
         offset = (frame - 1)*frameSize;       % absolute address of the frame
@@ -21,7 +21,7 @@ S = zeros(32,nFrame);
             end
             for k = 1:32
                 for r = 1:size(Y,2)
-                    S(k,frame) = S(k,frame) + (cos(((2*k)*(r-17)*pi)/64)*Y(r)); %Build S
+                    S(k,((frame-1)*18+index)) = S(k,((frame-1)*18+index)) + (cos(((2*k)*(r-17)*pi)/64)*Y(r)); %Build S
                 end
             end
         end
