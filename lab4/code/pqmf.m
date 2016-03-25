@@ -1,8 +1,9 @@
-function [ S ] = pqmf( filename, frameSize )
+function [ S ] = pqmf( filename, frameSize)
 %pqmf: filter for mp3
 %   Detailed explanation goes here
 
 [audio, fs] = audioread(filename);
+audio = audio(1:fs*5);
 nFrame = floor (length (audio)/frameSize);
 buffer = zeros(1,512);
 window = loadwindow;
