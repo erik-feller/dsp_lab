@@ -3,5 +3,6 @@ function [ coef ] = pqmf_buf( buffer )
 %   Detailed explanation goes here
 
 
+
 end
 
