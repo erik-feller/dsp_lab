@@ -5,7 +5,7 @@ function [ S ] = pqmf( filename, frameSize)
 [audio, fs] = audioread(filename);
 audio = audio(1:fs*5);
 nFrame = floor (length (audio)/frameSize);
-buffer = zeros(1,512);
+buffer = zeros(1,512); %Make circular buffer
 window = loadwindow;
 S = zeros(32,nFrame*18);
     for frame = 1:nFrame                % chunk the audio into blocks of 576 samples
@@ -24,9 +24,16 @@ S = zeros(32,nFrame*18);
                 for r = 1:size(Y,2)
                     S(k,((frame-1)*18+index)) = S(k,((frame-1)*18+index)) + (cos(((2*k)*(r-17)*pi)/64)*Y(r)); %Build S
                 end
+                %Frequency inversion
+                if mod(k,2) == 1
+                    S(k,((frame-1)*18+index)) = -S(k,((frame-1)*18+index));
+                end
             end
         end
     end
+%%
+%plot things
+plot(unwrap_s(S));
 
 end
 
