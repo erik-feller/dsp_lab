@@ -8,8 +8,7 @@ nFrame = floor (length (audio)/frameSize);
 buffer = zeros(1,512); %Make circular buffer
 window = loadwindow;
 S = zeros(32,nFrame*18);
-    for frame = 1:nFrame                % chunk the audio into blocks of 576 samples
-        for segment = 1:18     
+    for frame = 1:nFrame                % chunk the audio into blocks of 576 samples   
         offset = (frame - 1)*frameSize;       % absolute address of the frame
         for index = 1:18   
             total_offset = (offset+(index-1)*32)+1;
@@ -24,6 +23,7 @@ S = zeros(32,nFrame*18);
                 for r = 1:size(Y,2)
                     S(k,((frame-1)*18+index)) = S(k,((frame-1)*18+index)) + (cos(((2*k)*(r-17)*pi)/64)*Y(r)); %Build S
                 end
+                disp((frame-1)*18+index)
                 %Frequency inversion
                 if mod(k,2) == 1
                     S(k,((frame-1)*18+index)) = -S(k,((frame-1)*18+index));
