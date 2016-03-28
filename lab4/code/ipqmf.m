@@ -37,7 +37,7 @@ end
 
 figure(1)
 hold
-plot(audio)
+plot(audio(1:size(audio,2)))
 
 end
 
