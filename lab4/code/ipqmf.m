@@ -9,9 +9,11 @@ U = zeros(1,512); %make pre windowed holder
 for N = 1:size(coef,2)
     buffer = circshift(buffer,64,2);
     buffer(1:64) = 0; %zero out the front of buffer so that the sum works well
-    for i = 1:64
-        for k = 1:32
-            buffer(i) = buffer(i) + cos(((2.*k)*(15+i)*pi)/64).*coef(k,N);
+    for i = 0:63
+        for k = 0:31
+            if mod(k,2) == 1
+                
+            buffer(i+1) = buffer(i+1) + cos(((2.*k)*(15+i)*pi)/64).*coef(k,N);
         end
     end
     %Make U
