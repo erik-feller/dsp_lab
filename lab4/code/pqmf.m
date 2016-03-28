@@ -1,39 +1,37 @@
-function [ S ] = pqmf( filename, frameSize)
+function [ coef ] = pqmf(frames)
 %pqmf: filter for mp3
 %   Detailed explanation goes here
-
-[audio, fs] = audioread(filename);
-audio = audio(1:fs*5);
-nFrame = floor (length (audio)/frameSize);
-buffer = zeros(1,512); %Make circular buffer
-window = loadwindow;
-S = zeros(32,nFrame*18); %Create S to hold a number for each computation
-for frame = 1:nFrame                % chunk the audio into blocks of 576 samples   
-    offset = (frame - 1)*frameSize;       % absolute address of the frame
-    for index = 1:18   
-        total_offset = (offset+(index-1)*32)+1
-        buffer = circshift(buffer,32,2);% shift old data to front
-        buffer(1:32) = fliplr(audio(total_offset:total_offset+31)); %replace oldest data flip for conv
-        Z = buffer.*window; %Calculate Z (apply window)
-        Y = zeros(1,64); %Create a place for Y
-        for i = 1:size(buffer,2)
-            Y(mod(i-1,64)+1) = Y(mod(i-1,64)+1) + buffer(i); %Build Y
-        end
-        for k = 1:32
-            for r = 1:size(Y,2)
-                S(k,((frame-1)*18+index)) = S(k,((frame-1)*18+index)) + (cos(((2*k)*(r-17)*pi)/64)*Y(r)); %Build S
-            end
-            %disp((frame-1)*18+index)
-            %Frequency inversion
-            if mod(k,2) == 0
-                S(k,((frame-1)*18+index)) = -S(k,((frame-1)*18+index));
+coef = zeros(32,size(frames,3)*size(frames,2));
+X = zeros(512,1);
+window = loadwindow';
+for frame = 1:size(frames,3)
+    for sub_frame = 1:size(frames,2)
+        X(33:512) = X(1:480);
+        X(1:32) = flipud(frames(:,sub_frame,frame));
+        Z = window.*X;
+        Y = zeros(64,1);
+        for i = 0:63
+            for j = 0:7
+                Y(i+1) = Y(i+1)+Z((i+64*j)+1);
             end
         end
+%         for k = 1:size(Z,1)
+%             Y(mod(k-1,64)+1) = Y(mod(k-1,64)+1) + Z(k);
+%         end
+        for k = 0:31 %For the different subbands
+            Mk = zeros(64,1);
+            for r = 0:63
+                Mk(r+1) = cos(((2*k+1)*(r-16)*pi)/64); %Build Mk
+            end
+            coef(k+1,(frame-1)*18+sub_frame) = sum(Y.*Mk); %Apply Mk to make the 
+            if mod(k,2) == 1
+                coef(k+1,(frame-1)*18+sub_frame) = -coef(k+1,(frame-1)*18+sub_frame);
+            end
+        end 
     end
 end
-%%
-%plot things
-plot(unwrap_s(S));
 
+figure(2)
+plot(unwrap_s(coef));
 end
 

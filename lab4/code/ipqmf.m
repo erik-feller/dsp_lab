@@ -1,8 +1,8 @@
-function [ audio ] = ipqmf( coef )
+function [ audio ] = ipqmf( coef, frames )
 %ipqmf: inverse pqmf signal analysis
 %   S should be taken from pqmf function
 
-audio = zeros(1,(5.*11025));
+audio = zeros(1,size(coef,2)/18*576);
 buffer = zeros(1,1024); %make the buffer V
 U = zeros(1,512); %make pre windowed holder
 [C, D] = loadwindow; %load in window
@@ -29,6 +29,10 @@ for N = 1:size(coef,2)
         end
     end
 end
+
+figure(1)
+hold
+plot(audio)
 
 end
 
