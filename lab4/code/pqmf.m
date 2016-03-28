@@ -15,9 +15,6 @@ for frame = 1:size(frames,3)
                 Y(i+1) = Y(i+1)+Z((i+64*j)+1);
             end
         end
-%         for k = 1:size(Z,1)
-%             Y(mod(k-1,64)+1) = Y(mod(k-1,64)+1) + Z(k);
-%         end
         for k = 0:31 %For the different subbands
             Mk = zeros(64,1);
             for r = 0:63

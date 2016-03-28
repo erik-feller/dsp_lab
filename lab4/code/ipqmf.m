@@ -1,4 +1,4 @@
-function [ audio ] = ipqmf( coef, frames )
+function [ audio ] = ipqmf( coef )
 %ipqmf: inverse pqmf signal analysis
 %   S should be taken from pqmf function
 

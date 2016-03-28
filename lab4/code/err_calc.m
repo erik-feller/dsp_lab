@@ -14,7 +14,7 @@ function [ max_err ] = err_calc( original, recons )
 %%
 %Now calculate the error for each sample
 delay = finddelay(original, recons)
-recons = circshift(recons, -delay, 2)
+recons = circshift(recons, -delay, 2);
 figure(3)
 % plot(original)
 % hold
