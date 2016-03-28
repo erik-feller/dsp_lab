@@ -16,7 +16,6 @@ for frame = 1:nFrame                % chunk the audio into blocks of 576 samples
     end
 end
 
-figure(1)
-plot(audio)
+
 end
 

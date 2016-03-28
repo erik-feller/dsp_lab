@@ -35,9 +35,5 @@ for N = 1:size(coef,2)
     end
 end
 
-figure(1)
-hold
-plot(audio(1:size(audio,2)))
-
 end
 
