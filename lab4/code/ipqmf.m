@@ -12,8 +12,11 @@ for N = 1:size(coef,2)
     for i = 0:63
         for k = 0:31
             if mod(k,2) == 1
-                
-            buffer(i+1) = buffer(i+1) + cos(((2.*k)*(15+i)*pi)/64).*coef(k,N);
+                mul = -1;
+            else
+                mul = 1;
+            end
+            buffer(i+1) = buffer(i+1) + cos(((2.*k+1)*(16+i)*pi)/64).*coef(k+1,N)*mul;
         end
     end
     %Make U
