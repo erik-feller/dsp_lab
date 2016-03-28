@@ -1,4 +1,4 @@
-function [ frame_audio ] = framify( song_location, frameSize, dur )
+function [ frame_audio, audio ] = framify( song_location, frameSize, dur )
 %framify: frame-ify the audio 
 %   Detailed explanation goes here
 
