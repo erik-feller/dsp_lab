@@ -10,8 +10,8 @@ nTiles = v_tiles*h_tiles;
 tiles = zeros(8,8,nTiles);
 for v = 1:v_tiles
     for h = 1:h_tiles
-        h_offset = (h-1)*8+1
-        v_offset = (v-1)*8+1
+        h_offset = (h-1)*8+1;
+        v_offset = (v-1)*8+1;
         tiles(:,:,(v-1)*v_tiles+h) = image_data(v_offset:v_offset+7,h_offset:h_offset+7);
     end
 end
@@ -29,6 +29,7 @@ for tile = 1:nTiles
     vals = vals(indices_m);
     cos_tran(:,tile) = vals';
     for i = 1:64
+        [u , v] = find(indices==indices_m(i));
         
 end
 
