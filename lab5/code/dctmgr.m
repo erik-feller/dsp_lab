@@ -1,4 +1,4 @@
-function [ cos_tran ] = dctmgr( image_data )
+function [ cos_tran, v_tiles, h_tiles ] = dctmgr( image_data )
 %dctmgr: provides cosine transformed image data as requested
 %   Detailed explanation goes here
 
@@ -25,7 +25,7 @@ for tile = 1:nTiles
     indices_m = fliplr(spdiags(fliplr(indices)));
     indices_m(:,1:2:end) = flipud(indices_m(:,1:2:end));
     indices_m(indices_m==0) = [];
-    vals = dct2(tiles(:,:,tile));
+    vals = dct2(tiles(:,:,tile)); %Take the discrete cos trans
     vals = vals(indices_m);
     cos_tran(:,tile) = vals';
     

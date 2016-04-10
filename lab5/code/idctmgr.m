@@ -1,4 +1,4 @@
-function [ img, img_f ] = idctmgr( coef )
+function [ img, img_f ] = idctmgr( coef, v_tiles, h_tiles )
 %idctmgr: converts from dct coefficients to an image
 %   Detailed explanation goes here
 
@@ -14,9 +14,18 @@ for b = 1:size(coef,2)
     %rebuild the tile
     for i = 1:64
         [r , c] = find(indices_m(i)==indices,1);
-        img_f(r,c) = coef(i,b);
+        img_f(r,c,b) = coef(i,b);
     end
     img_f(:,:,b) = idct2(img_f(:,:,b));
-    
 end
+
+%rebuild whole image
+for v = 1:v_tiles
+    for h = 1:h_tiles
+        h_offset = (h-1)*8+1;
+        v_offset = (v-1)*8+1;
+        img(v_offset:v_offset+7,h_offset:h_offset+7) = img_f(:,:,(v-1)*v_tiles+h);
+    end
+end
+    
 
