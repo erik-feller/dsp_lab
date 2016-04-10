@@ -1,4 +1,4 @@
-function [ cos_tran, v_tiles, h_tiles ] = dctmgr( image_data )
+function [ coef, v_tiles, h_tiles ] = dctmgr( image_data )
 %dctmgr: provides cosine transformed image data as requested
 %   Detailed explanation goes here
 
@@ -29,6 +29,13 @@ for tile = 1:nTiles
     vals = vals(indices_m);
     cos_tran(:,tile) = vals';
     
+end
+
+%%
+%zero frequency stuff
+coef = cos_tran;
+for i = 2:size(cos_tran,2)
+    coef(1,i) = cos_tran(1,i) - cos_tran(1,i-1);
 end
 
 end
