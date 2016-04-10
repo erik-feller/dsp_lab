@@ -20,12 +20,12 @@ for b = 1:size(coef,2)
             nbits = 11;
         end
         if curr_block(start) ~= 0
-            symb_p = cat(1, symb_p, [zip_count, nbits, curr_block(start)]);
+            symb_p = cat(2, symb_p, [zip_count, nbits, curr_block(start)]);
         end
     end
     symb{b} = symb_p;
 end
-
+symb_p = cat(2, symb_p, [00, 00])
 
 end
 
