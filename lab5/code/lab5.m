@@ -8,14 +8,14 @@
 images = {};
 saveim = 1; %Switch to allow turning off image saving
 images = dir('../images/*.pgm');
-loss_factors = [1, 10, 20];
+loss_factors = [1];
 peak_snr = zeros(size(images,1),size(loss_factors,2));
 for i = 1:size(images,1)
     images(i).name = strrep(images(i).name,'.pgm','');
     for l = 1:size(loss_factors,2)
         img = imread(fullfile('../images/',strcat(images(i).name,'.pgm')));
         coef = dctmgr(img, loss_factors(l));
-        encoded = encode(coef);
+        symb = encode(coef);
         rebuilt = idctmgr(coef, 64, 64, loss_factors(l));
         if(saveim)
             imwrite(rebuilt, fullfile('../output/', strcat(images(i).name, '-',num2str(loss_factors(l)),'.pgm')), 'pgm');

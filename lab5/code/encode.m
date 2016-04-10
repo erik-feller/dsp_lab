@@ -23,9 +23,10 @@ for b = 1:size(coef,2)
             symb_p = cat(2, symb_p, [zip_count, nbits, curr_block(start)]);
         end
     end
+    symb_p = cat(2, symb_p, [00, 00]);
     symb{b} = symb_p;
 end
-symb_p = cat(2, symb_p, [00, 00])
+
 
 end
 
