@@ -1,4 +1,4 @@
-function [ img, img_f ] = idctmgr( coef, v_tiles, h_tiles )
+function [ img, img_f ] = idctmgr( coef, v_tiles, h_tiles, loss_factor )
 %idctmgr: converts from dct coefficients to an image
 %   Detailed explanation goes here
 
@@ -8,6 +8,8 @@ indices = reshape(1:numel(coef(:,1)), [8, 8]);
 indices_m = fliplr(spdiags(fliplr(indices)));
 indices_m(:,1:2:end) = flipud(indices_m(:,1:2:end));
 indices_m(indices_m==0) = [];
+q_tab = [16 11 10 16 24 40 51 61; 12 12 14 19 26 58 60 55; 14 13 16 24 40 57 69 56; 14 17 22 29 51 87 80 62;...
+      18 22 37 56 68 109 103 77; 24 35 55 64 81 104 113 92; 49 64 78 87 103 121 120 101; 72 92 95 98 112 100 103 99];
 img_f = zeros(8,8,size(coef,2));
 img = zeros(512,512);
 for b = 1:size(coef,2)
@@ -16,7 +18,7 @@ for b = 1:size(coef,2)
         [r , c] = find(indices_m(i)==indices,1);
         img_f(r,c,b) = coef(i,b);
     end
-    img_f(:,:,b) = idct2(img_f(:,:,b));
+    img_f(:,:,b) = idct2(img_f(:,:,b).*loss_factor.*q_tab);
 end
 
 %rebuild whole image

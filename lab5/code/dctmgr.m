@@ -1,4 +1,4 @@
-function [ coef, v_tiles, h_tiles ] = dctmgr( image_data )
+function [ coef, v_tiles, h_tiles ] = dctmgr( image_data, loss_factor )
 %dctmgr: provides cosine transformed image data as requested
 %   Detailed explanation goes here
 
@@ -26,6 +26,9 @@ for tile = 1:nTiles
     indices_m(:,1:2:end) = flipud(indices_m(:,1:2:end));
     indices_m(indices_m==0) = [];
     vals = dct2(tiles(:,:,tile)); %Take the discrete cos trans
+    q_tab = [16 11 10 16 24 40 51 61; 12 12 14 19 26 58 60 55; 14 13 16 24 40 57 69 56; 14 17 22 29 51 87 80 62;...
+      18 22 37 56 68 109 103 77; 24 35 55 64 81 104 113 92; 49 64 78 87 103 121 120 101; 72 92 95 98 112 100 103 99];
+    vals = round(vals./(loss_factor.*q_tab));
     vals = vals(indices_m);
     cos_tran(:,tile) = vals';
     
@@ -34,9 +37,12 @@ end
 %%
 %zero frequency stuff
 coef = cos_tran;
-for i = 2:size(cos_tran,2)
-    coef(1,i) = cos_tran(1,i) - cos_tran(1,i-1);
-end
+% for i = 2:size(cos_tran,2)
+%     coef(1,i) = cos_tran(1,i) - cos_tran(1,i-1);
+% end
 
+%%
+%quantization
+ 
 end
 
