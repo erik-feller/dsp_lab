@@ -13,11 +13,16 @@ q_tab = [16 11 10 16 24 40 51 61; 12 12 14 19 26 58 60 55; 14 13 16 24 40 57 69 
 img_f = zeros(8,8,size(coef,2));
 img = zeros(512,512);
 for b = 1:size(coef,2)
+    %reverse the diff encoding
+    if b > 1
+        coef(1,b) = coef(1,b)+coef(1,b-1);
+    end
     %rebuild the tile
     for i = 1:64
         [r , c] = find(indices_m(i)==indices,1);
         img_f(r,c,b) = coef(i,b);
     end
+    
     img_f(:,:,b) = idct2(img_f(:,:,b).*loss_factor.*q_tab);
 end
 
