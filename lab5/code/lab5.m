@@ -15,6 +15,7 @@ for i = 1:size(images,1)
     for l = 1:size(loss_factors,2)
         img = imread(fullfile('../images/',strcat(images(i).name,'.pgm')));
         coef = dctmgr(img, loss_factors(l));
+        encoded = encode(coef);
         rebuilt = idctmgr(coef, 64, 64, loss_factors(l));
         if(saveim)
             imwrite(rebuilt, fullfile('../output/', strcat(images(i).name, '-',num2str(loss_factors(l)),'.pgm')), 'pgm');
