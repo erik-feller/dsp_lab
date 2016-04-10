@@ -41,8 +41,5 @@ coef = cos_tran;
 %     coef(1,i) = cos_tran(1,i) - cos_tran(1,i-1);
 % end
 
-%%
-%quantization
- 
 end
 
