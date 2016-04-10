@@ -35,7 +35,7 @@ for tile = 1:nTiles
 end
 
 %%
-%zero frequency stuff
+%differential encoding
 coef = cos_tran;
 for i = 2:size(cos_tran,2)
     coef(1,i) = cos_tran(1,i) - cos_tran(1,i-1);
