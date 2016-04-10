@@ -7,4 +7,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 img = imread('../images/fingerprint.pgm');
-dctmgr(img);
+coef = dctmgr(img);
+idctmgr(coef);

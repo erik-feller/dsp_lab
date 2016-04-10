@@ -25,12 +25,10 @@ for tile = 1:nTiles
     indices_m = fliplr(spdiags(fliplr(indices)));
     indices_m(:,1:2:end) = flipud(indices_m(:,1:2:end));
     indices_m(indices_m==0) = [];
-    vals = tiles(:,:,tile);
+    vals = dct2(tiles(:,:,tile));
     vals = vals(indices_m);
     cos_tran(:,tile) = vals';
-    for i = 1:64
-        [u , v] = find(indices==indices_m(i));
-        
+    
 end
 
 end
